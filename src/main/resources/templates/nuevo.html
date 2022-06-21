@@ -1,0 +1,155 @@
+<!-- Creado por Gina Gaggero Schivo -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Crear nave</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<style>
+			.button{
+				border: 1px;
+				border-color: blue;
+				border-style: solid;
+			 	color: white;
+			 	padding: 10px 15px;
+			  	text-align: center;
+			  	text-decoration: none;
+			  	display: inline-block;
+			  	font-size: 14px;
+			  	margin: 2px 2px;
+			  	cursor: pointer;
+				background-color:rgb(0, 128, 192);
+				float: right;
+			}
+			body{
+				font-family: Arial, Helvetica, sans-serif;
+				padding: 20px
+			}
+			.submit{
+				border: 1px;
+				border-color: blue;
+				border-style: solid;
+			 	color: white;
+			 	padding: 5px 30px;
+			  	text-align: center;
+			  	text-decoration: none;
+			  	display: inline-block;
+			  	margin: 2px 2px;
+			  	cursor: pointer;
+				background-color:rgb(0, 128, 192);
+	
+			}
+			label {
+			    margin-right:40px;
+			    margin-left:130px;
+			}
+			
+			input {
+			    height: 20px;
+			    width: 400px;
+			}
+			select{
+				height: 20px;
+			    width: 400px;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div>	
+			<div>
+				<button class="button">Cerrar Sesión</button>
+			</div>
+		
+			<img th:src="@{/images/logo.png}"/><br/>
+	
+			<h2 class="card-header" th:text="${titulo}"></h2>
+			<div align="center">
+				<a th:href="@{/listar}"><i class="glyphicon glyphicon-arrow-left"></i> Volver</a>
+			</div>
+			<div style="border-width: 1px; border-color: rgb(0, 128, 255); border-style: solid; width: 90%;">
+				<div class="card-body">
+					<div th:text="${mensajeError}" style="color: red;"/>
+					<form th:action="@{/guardar}" th:object="${vehiculo}" method="post"
+						enctype="multipart/form-data">
+						
+						<br/>
+						<div class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">Nombre de la nave</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" th:field="*{nombreVehiculo}" id="nombreVehiculo" />
+									<span th:if="${#fields.hasErrors('nombreVehiculo')}" th:errors="*{nombreVehiculo}" style="color: red;"></span>
+						</div>
+						</div>
+						<div class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">CB o CA</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" th:field="*{CBoCA}" id="CBoCA "/>
+								<span th:if="${#fields.hasErrors('CBoCA')}" th:errors="*{CBoCA}" style="color: red;"></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">Matrícula de la nave</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" th:field="*{IdentificacionVehiculo}" id="IdentificacionVehiculo" />
+								<span th:if="${#fields.hasErrors('IdentificacionVehiculo')}" th:errors="*{IdentificacionVehiculo}" style="color: red;"></span>
+							</div>
+						</div>
+					<div class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">Tipo de nave</label>
+							<div class="col-sm-6">
+								<select class="form-control" th:field="${vehiculo.tipoVehiculo}" id="vehiculo.tipoVehiculo" >
+								   <option th:value="null">Elige una opcion</option>
+								    <option th:each="tipoVehiculo : ${listaTipoNaves}" th:value="${tipoVehiculo	.idTipoVehiculo}" th:text="${tipoVehiculo.nombreTipoVehiculo}" ></option>							    
+								</select>
+								<span th:if="${#fields.hasErrors('tipoVehiculo')}" th:errors="*{tipoVehiculo}" style="color: red;"></span>
+							</div>
+						</div> 
+						<div class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">Tratamiento de agua</label>
+							<div class="col-sm-6">
+								<select th:field="*{tratamAgua}" id="tratamAgua" >
+									<option th:value="null">Elige una opcion</option>
+									<option th:value="1">Sí</option>
+									<option th:value="0">No</option>
+								</select>
+								<span th:if="${#fields.hasErrors('tratamAgua')}" th:errors="*{tratamAgua}" style="color: red;"></span>
+							</div> 
+						</div>	
+						<div  class="form-group row">
+							<label for="nombre" class="col-sm-2 col-form-label">Estado de la nave</label>
+							<div class="col-sm-6">
+								<select th:field="*{deshabilitado}" id="deshabilitado" >
+									<option th:value="null">Elige una opcion</option>
+									<option th:value="0" >Vigente</option>
+									<option th:value="1" >No vigente</option>
+								</select>
+								<span th:if="${#fields.hasErrors('deshabilitado')}" th:errors="*{deshabilitado}" style="color: red;"></span>
+							</div>
+						</div >
+						<div class="form-group row">
+							<label for="createAt" class="col-sm-2 col-form-label">Fecha Creacion</label>
+							<div class="col-sm-6">
+								
+								<input readonly="readonly" type="text" class="form-control"
+									th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+									name="fechaModificacion" id="fechaModificacion"
+								 />
+							</div>
+						</div>
+						<div align="center">
+							<button type="button" class="submit">
+    							<a th:href="@{/listar}" style="color: white;">Cancelar</a>
+    						</button>
+				        	<button class="submit" type="submit">
+				        		<a style="color: white;">Agregar</a>
+				        	</button>	
+				        </div>
+				        <br/>
+					</form>
+				</div>		
+			</div>
+		</div>			
+	</body>
+
+</html>
